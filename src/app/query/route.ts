@@ -1,5 +1,5 @@
 // app/query/route.ts - Updated with all new columns
-import postgres from 'postgres';
+import postgres from "postgres";
 
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
@@ -9,15 +9,15 @@ const conn = postgres({
   username: PGUSER,
   password: PGPASSWORD,
   port: 5432,
-  ssl: 'require',
+  ssl: "require",
 });
 
 // Helper function to generate slug
 function generateSlug(title: string): string {
   return title
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '');
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 export async function selectAll() {
@@ -48,10 +48,10 @@ export async function createRecipe(
   mainImageUrl?: string,
   instructionImages?: any[],
   tags?: any[],
-  isPublished: boolean = false
+  isPublished: boolean = false,
 ) {
   const baseSlug = generateSlug(title);
-  
+
   // Insert without slug first to get the ID
   const result = await conn`
     INSERT INTO recipes (
@@ -66,18 +66,18 @@ export async function createRecipe(
     )
     RETURNING *
   `;
-  
+
   // Update with slug that includes the ID
   const recipeId = result[0].id;
   const slug = `${baseSlug}-${recipeId}`;
-  
+
   const updated = await conn`
     UPDATE recipes 
     SET slug = ${slug}
     WHERE id = ${recipeId}
     RETURNING *
   `;
-  
+
   return updated;
 }
 
@@ -94,12 +94,12 @@ export async function updateRecipe(
   mainImageUrl?: string,
   instructionImages?: any[],
   tags?: any[],
-  isPublished?: boolean
+  isPublished?: boolean,
 ) {
   // Generate new slug based on updated title
   const baseSlug = generateSlug(title);
   const slug = `${baseSlug}-${recipeId}`;
-  
+
   return await conn`
     UPDATE recipes 
     SET title = ${title}, 
@@ -113,14 +113,18 @@ export async function updateRecipe(
         instruction_images = ${conn.json(instructionImages || [])},
         tags = ${conn.json(tags || [])},
         slug = ${slug},
-        is_published = ${isPublished !== undefined ? isPublished : conn.unsafe('is_published')},
+        is_published = ${isPublished !== undefined ? isPublished : conn.unsafe("is_published")},
         updated_at = NOW()
     WHERE id = ${recipeId} AND user_id = ${userId}
     RETURNING *
   `;
 }
 
-export async function toggleRecipeVisibility(recipeId: number, userId: string, isHidden: boolean) {
+export async function toggleRecipeVisibility(
+  recipeId: number,
+  userId: string,
+  isHidden: boolean,
+) {
   return await conn`
     UPDATE recipes 
     SET is_hidden = ${isHidden},
@@ -130,7 +134,11 @@ export async function toggleRecipeVisibility(recipeId: number, userId: string, i
   `;
 }
 
-export async function toggleRecipePublished(recipeId: number, userId: string, isPublished: boolean) {
+export async function toggleRecipePublished(
+  recipeId: number,
+  userId: string,
+  isPublished: boolean,
+) {
   return await conn`
     UPDATE recipes 
     SET is_published = ${isPublished},
@@ -149,7 +157,7 @@ export async function deleteRecipe(recipeId: number, userId: string) {
 }
 
 export async function getRecipeBySlug(slug: string) {
-  console.log(slug)
+  console.log(slug);
   return await conn`
     SELECT * FROM recipes 
     WHERE slug = ${slug} AND is_published = true AND is_hidden = false

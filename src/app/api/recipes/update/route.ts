@@ -1,6 +1,6 @@
 // app/api/recipes/update/route.ts
-import { NextResponse } from 'next/server';
-import { updateRecipe } from '@/app/query/route';
+import { NextResponse } from "next/server";
+import { updateRecipe } from "@/app/query/route";
 
 export async function POST(request: Request) {
   try {
@@ -18,7 +18,7 @@ export async function POST(request: Request) {
       main_image_url,
       instruction_images,
       tags,
-      is_published
+      is_published,
     } = body;
 
     const result = await updateRecipe(
@@ -34,12 +34,15 @@ export async function POST(request: Request) {
       main_image_url,
       instruction_images,
       tags,
-      is_published
+      is_published,
     );
 
     return NextResponse.json({ recipe: result[0] });
   } catch (error) {
-    console.error('Error updating recipe:', error);
-    return NextResponse.json({ error: 'Failed to update recipe' }, { status: 500 });
+    console.error("Error updating recipe:", error);
+    return NextResponse.json(
+      { error: "Failed to update recipe" },
+      { status: 500 },
+    );
   }
 }

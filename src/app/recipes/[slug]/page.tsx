@@ -12,7 +12,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     return <div>Recipe not found</div>;
   }
 
-  console.log(recipe)
+  console.log(recipe);
 
   return (
     <div>

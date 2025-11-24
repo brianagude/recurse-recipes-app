@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
 import { UserButton, useUser } from "@stackframe/stack";
-import Link from "next/link"
+import Link from "next/link";
 
 export default function Header() {
   const user = useUser();
@@ -13,7 +13,7 @@ export default function Header() {
           {user ? (
             <>
               <Link href="/profile">My Recipes</Link>
-              <UserButton/>
+              <UserButton />
             </>
           ) : (
             <Link href="/handler/sign-up">Log In</Link>

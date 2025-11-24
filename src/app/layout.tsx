@@ -1,18 +1,21 @@
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Bagel_Fat_One, Figtree } from "next/font/google";
 import { Suspense } from "react";
 import Header from "@/components/Header";
 import { stackClientApp } from "../stack/client";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const bagelFat = Bagel_Fat_One({
+  variable: "--bagel-fat-one",
   subsets: ["latin"],
+  display: "swap",
+  weight: "400"
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const figtree = Figtree({
+  variable: "--font-figtree",
+  display: "swap",
   subsets: ["latin"],
 });
 
@@ -27,10 +30,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="en" className={`${bagelFat.variable} ${figtree.variable} antialiased`}>
+      <body>
         <StackProvider app={stackClientApp}>
           <StackTheme>
             <Suspense>

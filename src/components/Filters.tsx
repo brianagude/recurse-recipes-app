@@ -2,7 +2,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { type Recipe, TAG_OPTIONS } from "@/types";
+import { type Recipe, TAG_OPTIONS } from "@/helpers/types";
+import { CloseIcon } from "./icons/close";
+import { FiltersIcon } from "./icons/filters";
 
 interface FiltersProps {
   recipes: Recipe[];
@@ -59,79 +61,81 @@ export default function Filters({
   };
 
   return (
-    <div className="bg-white border-2 border-black rounded-2xl p-6 mb-8">
+    <div className="py-4 px-6">
       {/* Top Row */}
       <div className="flex items-center justify-between gap-4">
-        {/* Filters Toggle */}
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full border-2 border-black font-semibold transition-colors ${
-            isOpen ? "bg-black text-white" : "bg-white text-black"
-          }`}
-        >
-          Filters
-          <span className="text-sm">{isOpen ? "▲" : "▼"}</span>
+        <div className="flex">
+          {/* Filters Toggle */}
+          <button
+            type="button"
+            onClick={() => activeCategories.length > 0 ? setIsOpen(!isOpen) : setIsOpen(false)}
+            className="cursor-pointer flex gap-2 items-center text-lg font-semibold tracking-wide capitalize"
+          >
+            {isOpen ? <CloseIcon/> : <FiltersIcon/>}
+            Filters
+            {selectedTags.length > 0 && (
+              <span className="bg-white text-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
+                {selectedTags.length}
+              </span>
+            )}
+          </button>
           {selectedTags.length > 0 && (
-            <span className="bg-white text-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-              {selectedTags.length}
-            </span>
+            <button
+              type="button"
+              onClick={clearAllFilters}
+              className="text-lg font-bold"
+            >
+              &nbsp;&mdash;&nbsp; Clear All
+            </button>
           )}
-        </button>
+        </div>
 
         {/* Category Buttons */}
         <div className="flex gap-3 flex-wrap">
           {Object.keys(TAG_OPTIONS).map((category) => (
             <button
+              type="button"
               key={category}
               onClick={() => toggleCategory(category)}
-              className={`px-4 py-2 rounded-full border-2 border-black font-semibold capitalize transition-colors ${
+              className={`flex gap-2 items-center text-lg font-semibold tracking-wide capitalize px-4 py-2 rounded-full border-2 border-black w-fit transition-colors ${
                 activeCategories.includes(category)
                   ? "bg-black text-white"
-                  : "bg-white text-black hover:bg-gray-100"
+                  : "bg-white text-black hover:bg-gray-light"
               }`}
             >
               {category}
             </button>
           ))}
-          {selectedTags.length > 0 && (
-            <button
-              onClick={clearAllFilters}
-              className="px-4 py-2 rounded-full border-2 border-red-500 text-red-500 font-semibold hover:bg-red-50"
-            >
-              Clear All
-            </button>
-          )}
+          
         </div>
       </div>
 
       {/* Expanded Tag Options */}
       {isOpen && activeCategories.length > 0 && (
-        <div className="mt-6 space-y-4">
+        <div className="mt-4 flex flex-wrap justify-end gap-2">
           {activeCategories.map((category) => (
-            <div key={category} className="space-y-2">
-              <h3 className="font-bold text-lg capitalize">{category}</h3>
-              <div className="flex gap-2 flex-wrap">
+            <>
                 {TAG_OPTIONS[category].map((tag) => (
                   <button
+                    type="button"
                     key={tag}
                     onClick={() => toggleTag(tag)}
-                    className={`px-3 py-1.5 rounded-full border-2 text-sm font-medium transition-colors ${
+                    className={`flex gap-2 items-center text-lg font-semibold tracking-wide capitalize px-4 py-2 rounded-full border-2 border-black w-fit transition-colors ${
                       selectedTags.includes(tag)
-                        ? "bg-black text-white border-black"
-                        : "bg-white text-black border-gray-300 hover:border-black"
+                        ? "bg-gray-light"
+                        : "bg-white"
                     }`}
                   >
                     {tag}
                   </button>
                 ))}
-              </div>
-            </div>
+            </>
           ))}
         </div>
       )}
 
       {/* Active Filters Display */}
-      {selectedTags.length > 0 && (
+      {/* {selectedTags.length > 0 && (
         <div className="mt-4 pt-4 border-t-2 border-gray-200">
           <p className="text-sm font-semibold mb-2">
             Active Filters ({filteredRecipes.length} recipes):
@@ -153,7 +157,7 @@ export default function Filters({
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

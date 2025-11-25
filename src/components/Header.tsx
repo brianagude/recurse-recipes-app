@@ -11,34 +11,26 @@ export default function Header() {
   return (
     <header className="sticky top-0 left-0 w-full py-3 bg-white">
       <div className="flex w-full px-6 items-center justify-between">
-        <Link href="/" className="font-logo">
-          Recipes
+        <Link href="/" className="font-logo text-3xl">
+          bite sized
         </Link>
         <nav className="flex gap-4 items-center">
           <button type="button" className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
             <SearchIcon/>
             Search
           </button>
-          {user ? (
-            <>
-              <Link href="/profile" className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
-                <HeartIcon/>
-                My Recipes
-              </Link>
-              <UserButton />
-            </>
-          ) : (
-            <>
-              <Link href="/handler/sign-up" className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
-                <HeartIcon/>
-                My Recipes
-              </Link>
+          <Link href="/profile" className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
+            <HeartIcon/>
+            My Recipes
+          </Link>
+          {user ? 
+            <UserButton /> : (
               <Link href="/handler/sign-in" className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
                 <SmileyIcon/>
                 Log In
               </Link>
-            </>
-          )}
+            )
+          }
         </nav>
       </div>
     </header>

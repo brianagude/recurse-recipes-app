@@ -7,7 +7,7 @@ import { stackClientApp } from "../stack/client";
 import "./globals.css";
 
 const bagelFat = Bagel_Fat_One({
-  variable: "--bagel-fat-one",
+  variable: "--font-bagel-fat-one",
   subsets: ["latin"],
   display: "swap",
   weight: "400"

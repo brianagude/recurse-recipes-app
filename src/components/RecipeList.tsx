@@ -1,9 +1,9 @@
 // app/components/RecipeList.tsx
+
+import { ClockIcon, HeartIcon, StarIcon } from "@phosphor-icons/react";
 import Link from "next/link";
-import { ClockIcon } from "@/components/icons/clock";
-import { HeartIcon } from "@/components/icons/heart";
-import { StarIcon } from "@/components/icons/star";
 import type { Recipe } from "@/helpers/types";
+import { buttons } from "@/styles/design-tokens";
 
 interface RecipeListProps {
   recipes: Recipe[];
@@ -32,20 +32,20 @@ export default function RecipeList({ recipes }: RecipeListProps) {
             <h4 className="text-2xl font-bold leading-snug">{recipe.title}</h4>
 
             <div className="flex gap-3">
-              <p className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
-                <ClockIcon /> {(recipe.prep_time || 0) + (recipe.cook_time || 0)}{" "}
-                min
+              <p className={buttons.textIcon}>
+                <ClockIcon size={24} />{" "}
+                {(recipe.prep_time || 0) + (recipe.cook_time || 0)} min
               </p>
-              <p className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
-                <StarIcon /> 180 ratings
+              <p className={buttons.textIcon}>
+                <StarIcon size={24} /> 180 ratings
               </p>
             </div>
 
             <button
               type="button"
-              className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize pr-4 py-2 pl-3 rounded-full border-2 border-black w-fit"
+              className={`${buttons.tagIcon} w-fit`}
             >
-              <HeartIcon />
+              <HeartIcon size={24} />
               Save
             </button>
           </div>

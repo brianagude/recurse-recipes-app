@@ -1,10 +1,10 @@
 // app/components/Filters.tsx
 "use client";
 
+import { FunnelSimpleIcon, XIcon } from "@phosphor-icons/react";
 import { useMemo, useState } from "react";
 import { type Recipe, TAG_OPTIONS } from "@/helpers/types";
-import { CloseIcon } from "./icons/close";
-import { FiltersIcon } from "./icons/filters";
+import { buttons } from "@/styles/design-tokens";
 
 interface FiltersProps {
   recipes: Recipe[];
@@ -68,22 +68,22 @@ export default function Filters({
           {/* Filters Toggle */}
           <button
             type="button"
-            onClick={() => activeCategories.length > 0 ? setIsOpen(!isOpen) : setIsOpen(false)}
-            className="cursor-pointer flex gap-2 items-center text-lg font-semibold tracking-wide capitalize"
+            onClick={() =>
+              activeCategories.length > 0
+                ? setIsOpen(!isOpen)
+                : setIsOpen(false)
+            }
+            className={buttons.textIcon}
           >
-            {isOpen ? <CloseIcon/> : <FiltersIcon/>}
+            {isOpen ? <XIcon size={24} /> : <FunnelSimpleIcon size={24} />}
             Filters
-            {selectedTags.length > 0 && (
-              <span className="bg-white text-black rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold">
-                {selectedTags.length}
-              </span>
-            )}
+            {selectedTags.length > 0 && <span>{selectedTags.length}</span>}
           </button>
           {selectedTags.length > 0 && (
             <button
               type="button"
               onClick={clearAllFilters}
-              className="text-lg font-bold"
+              className={buttons.text}
             >
               &nbsp;&mdash;&nbsp; Clear All
             </button>
@@ -97,16 +97,15 @@ export default function Filters({
               type="button"
               key={category}
               onClick={() => toggleCategory(category)}
-              className={`flex gap-2 items-center text-lg font-semibold tracking-wide capitalize px-4 py-2 rounded-full border-2 border-black w-fit transition-colors ${
+              className={`${buttons.tag} ${
                 activeCategories.includes(category)
-                  ? "bg-black text-white"
+                  ? "bg-black text-white hover:text-black"
                   : "bg-white text-black hover:bg-gray-light"
               }`}
             >
               {category}
             </button>
           ))}
-          
         </div>
       </div>
 
@@ -115,20 +114,18 @@ export default function Filters({
         <div className="mt-4 flex flex-wrap justify-end gap-2">
           {activeCategories.map((category) => (
             <>
-                {TAG_OPTIONS[category].map((tag) => (
-                  <button
-                    type="button"
-                    key={tag}
-                    onClick={() => toggleTag(tag)}
-                    className={`flex gap-2 items-center text-lg font-semibold tracking-wide capitalize px-4 py-2 rounded-full border-2 border-black w-fit transition-colors ${
-                      selectedTags.includes(tag)
-                        ? "bg-gray-light"
-                        : "bg-white"
-                    }`}
-                  >
-                    {tag}
-                  </button>
-                ))}
+              {TAG_OPTIONS[category].map((tag) => (
+                <button
+                  type="button"
+                  key={tag}
+                  onClick={() => toggleTag(tag)}
+                  className={`${buttons.tag} ${
+                    selectedTags.includes(tag) ? "bg-gray" : ""
+                  }`}
+                >
+                  {tag}
+                </button>
+              ))}
             </>
           ))}
         </div>

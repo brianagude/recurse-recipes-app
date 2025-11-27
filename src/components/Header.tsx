@@ -1,10 +1,13 @@
 "use client";
 
+import {
+  HeartIcon,
+  MagnifyingGlassIcon,
+  UserCircleIcon,
+} from "@phosphor-icons/react";
 import { UserButton, useUser } from "@stackframe/stack";
 import Link from "next/link";
-import { HeartIcon } from "@/components/icons/heart";
-import { SearchIcon } from "@/components/icons/search";
-import { SmileyIcon } from "@/components/icons/smiley";
+import { buttons } from "@/styles/design-tokens";
 
 export default function Header() {
   const user = useUser();
@@ -15,22 +18,22 @@ export default function Header() {
           bite sized
         </Link>
         <nav className="flex gap-4 items-center">
-          <button type="button" className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
-            <SearchIcon/>
+          <button type="button" className={buttons.textIcon}>
+            <MagnifyingGlassIcon size={24} />
             Search
           </button>
-          <Link href="/profile" className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
-            <HeartIcon/>
+          <Link href="/profile" className={buttons.textIcon}>
+            <HeartIcon size={24} />
             My Recipes
           </Link>
-          {user ? 
-            <UserButton /> : (
-              <Link href="/handler/sign-in" className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
-                <SmileyIcon/>
-                Log In
-              </Link>
-            )
-          }
+          {user ? (
+            <UserButton />
+          ) : (
+            <Link href="/handler/sign-in" className={buttons.textIcon}>
+              <UserCircleIcon size={24} />
+              Log In
+            </Link>
+          )}
         </nav>
       </div>
     </header>

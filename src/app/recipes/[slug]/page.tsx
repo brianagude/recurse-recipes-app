@@ -1,4 +1,10 @@
+import {
+  HeartIcon,
+  MagnifyingGlassIcon,
+  UserCircleIcon,
+} from "@phosphor-icons/react";
 import { getRecipeBySlug } from "@/app/query/route";
+import { buttons } from "@/styles/design-tokens";
 
 type PageProps = {
   params: Promise<{ slug: string }>;

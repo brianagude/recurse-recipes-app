@@ -1,17 +1,19 @@
 "use client";
 
+import {
+  ClockIcon,
+  LinkIcon,
+  MinusCircleIcon,
+  PencilCircleIcon,
+  PlusCircleIcon,
+  StarIcon,
+  TrashIcon,
+} from "@phosphor-icons/react";
 import Link from "next/link";
 import { useState } from "react";
-import { AddIcon } from "@/components/icons/add";
-import { ClockIcon } from "@/components/icons/clock";
-import { DeleteIcon } from "@/components/icons/delete";
-import { EditIcon } from "@/components/icons/edit";
-import { OutboundIcon } from "@/components/icons/outbound";
-import { RemoveIcon } from "@/components/icons/remove";
-import { StarIcon } from "@/components/icons/star";
 import type { Recipe } from "@/helpers/types";
+import { buttons, typography } from "@/styles/design-tokens";
 import Filters from "./Filters";
-import MyRecipes from "./MyRecipes";
 import RecipeForm from "./RecipeForm";
 
 export default function Profile({
@@ -97,12 +99,12 @@ export default function Profile({
       )}
 
       <div className="bg-black text-white py-3 px-6 flex justify-between">
-        <h6 className="text-xl font-bold leading-snug">Your Recipes</h6>
+        <h6 className={typography.h5}>Your Recipes</h6>
         <button
           type="button"
           onClick={() => setIsCreating(true)}
           aria-label="Create new recipe"
-          className="cursor-pointer"
+          className={buttons.text}
         >
           + New Recipe
         </button>
@@ -135,12 +137,12 @@ export default function Profile({
 
                   {(recipe.prep_time || recipe.cook_time) && (
                     <div className="flex gap-3">
-                      <p className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
-                        <ClockIcon />{" "}
+                      <p className={buttons.textIcon}>
+                        <ClockIcon size={24} />{" "}
                         {(recipe.prep_time || 0) + (recipe.cook_time || 0)} min
                       </p>
-                      <p className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize">
-                        <StarIcon /> 180 ratings
+                      <p className={buttons.textIcon}>
+                        <StarIcon size={24} /> 180 ratings
                       </p>
                     </div>
                   )}
@@ -150,16 +152,16 @@ export default function Profile({
                       type="button"
                       onClick={() => setEditingId(recipe.id)}
                       aria-label={`Edit recipe ${recipe.title}`}
-                      className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize pr-4 py-2 pl-3 rounded-full border-2 border-black"
+                      className={buttons.tagIcon}
                     >
-                      <EditIcon />
+                      <PencilCircleIcon size={24} />
                       Edit
                     </button>
                     <Link
                       href={`/recipes/${recipe.slug}`}
-                      className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize pr-4 py-2 pl-3 rounded-full border-2 border-black"
+                      className={buttons.tagIcon}
                     >
-                      <OutboundIcon />
+                      <LinkIcon size={24} />
                       View
                     </Link>
                     <button
@@ -172,18 +174,18 @@ export default function Profile({
                           ? `Unpublish recipe ${recipe.title}`
                           : `Publish recipe ${recipe.title}`
                       }
-                      className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize pr-4 py-2 pl-3 rounded-full border-2 border-black"
+                      className={buttons.tagIcon}
                     >
-                      {recipe.is_published ? <RemoveIcon /> : <AddIcon/>}
+                      {recipe.is_published ? <MinusCircleIcon size={24} /> : <PlusCircleIcon size={24} />}
                       {recipe.is_published ? "Unpublish" : "Publish"}
                     </button>
                     <button
                       type="button"
                       onClick={() => handleDelete(recipe.id)}
                       aria-label={`Delete recipe ${recipe.title}`}
-                      className="flex gap-2 items-center text-lg font-semibold tracking-wide capitalize pr-4 py-2 pl-3 rounded-full border-2 border-black"
+                      className={buttons.tagIcon}
                     >
-                      <DeleteIcon />
+                      <TrashIcon size={24} />
                       Delete
                     </button>
                   </div>
@@ -195,7 +197,7 @@ export default function Profile({
       </div>
 
       <div className="bg-black text-white py-3 px-6">
-        <h6 className="text-xl font-bold leading-snug">Saved Recipes</h6>
+        <h6 className={typography.h5}>Saved Recipes</h6>
       </div>
     </main>
   );

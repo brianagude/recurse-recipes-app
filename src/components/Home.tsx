@@ -16,7 +16,7 @@ export default function Home({ initialRecipes }: { initialRecipes: Recipe[] }) {
         onFilteredRecipesChange={setFilteredRecipes}
       />
 
-    <RecipeList recipes={filteredRecipes} />
+      <RecipeList recipes={filteredRecipes} />
     </main>
   );
 }

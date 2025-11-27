@@ -3,7 +3,7 @@ const paragraphBase = "leading-snug";
 const kickerBase = "font-extrabold leading-snug";
 const buttonBase = `
   font-semibold leading-tight capitalize tracking-wide
-  transition-colors cursor-pointer
+  transition-colors cursor-pointer w-fit
 `.trim();
 
 export const typography = {
@@ -27,12 +27,13 @@ export const typography = {
   b2: `${buttonBase} text-lg`,
 };
 
-
 export const buttons = {
-	text: `${typography.b2} `,
-	textIcon: `${typography.b2} flex items-center gap-2`,
-	tag: `${typography.b2} px-6 py-2 rounded-full border-2 border-black hover:bg-gray-light`,
-	tagIcon: `${typography.b2} flex items-center gap-3 px-4 pl-3 py-2 gap-2 rounded-full border-2 border-black hover:bg-gray-light`,
-	primary: `${typography.b1} px-5 py-3 gap-3 rounded-md border-2 border-black`,
-	primaryIcon: `${typography.b1} flex items-center gap-3 px-5 py-3 gap-3 rounded-md border-2 border-black`,
+  text: `${typography.b2} `,
+  textIcon: `${typography.b2} flex items-center gap-2`,
+  tag: `${typography.b2} px-6 py-2 rounded-full border-2 border-black hover:bg-gray-light`,
+  tagIcon: `${typography.b2} flex items-center gap-3 px-4 pl-3 py-2 gap-2 rounded-full border-2 border-black hover:bg-gray-light`,
+  tagSmall: `${typography.p3} px-4 py-1 rounded-full bg-black text-white w-fit`,
+  tagIconSmall: `${typography.p3} flex items-center gap-3 px-4 pl-3 py-1 gap-2 rounded-full bg-black text-white w-fit`,
+  primary: `${typography.b1} px-5 py-3 gap-3 rounded-md border-2 border-black`,
+  primaryIcon: `${typography.b1} flex items-center gap-3 px-5 py-3 gap-3 rounded-md border-2 border-black`,
 };

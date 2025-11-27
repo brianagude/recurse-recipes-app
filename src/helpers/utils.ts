@@ -1,4 +1,4 @@
-import type { IngredientItem } from "./types"
+import type { IngredientItem } from "./types";
 
 // Normalizes ingredient input, converting legacy strings to objects
 export function normalizeIngredients(raw: any[]): IngredientItem[] {

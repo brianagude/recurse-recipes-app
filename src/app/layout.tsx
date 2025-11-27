@@ -10,7 +10,7 @@ const bagelFat = Bagel_Fat_One({
   variable: "--font-bagel-fat-one",
   subsets: ["latin"],
   display: "swap",
-  weight: "400"
+  weight: "400",
 });
 
 const figtree = Figtree({
@@ -30,7 +30,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${bagelFat.variable} ${figtree.variable} antialiased`}>
+    <html
+      lang="en"
+      className={`${bagelFat.variable} ${figtree.variable} antialiased`}
+    >
       <body>
         <StackProvider app={stackClientApp}>
           <StackTheme>

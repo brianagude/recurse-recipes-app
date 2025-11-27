@@ -25,7 +25,14 @@ export interface Recipe {
 }
 
 export const TAG_OPTIONS: Record<string, string[]> = {
-  cuisine: ["American", "Italian", "Japanese", "Korean", "Mexican", "Mediterranean"],
+  cuisine: [
+    "American",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Mexican",
+    "Mediterranean",
+  ],
   diet: ["Vegan", "Vegetarian", "Pescatarian", "Gluten-Free", "Dairy-Free"],
   method: ["One-pot", "Air Fryer", "Slow Cooker", "Grill", "Bake", "Fry"],
   meal: ["Breakfast", "Lunch", "Dinner", "Snack", "Salad", "Side Dish"],

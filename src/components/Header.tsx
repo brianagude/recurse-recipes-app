@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ChefHatIcon,
   HeartIcon,
   MagnifyingGlassIcon,
   UserCircleIcon,
@@ -25,6 +26,10 @@ export default function Header() {
           <Link href="/profile" className={buttons.textIcon}>
             <HeartIcon size={24} />
             My Recipes
+          </Link>
+          <Link href="/" className={buttons.textIcon}>
+            <ChefHatIcon size={24} />
+            All Recipes
           </Link>
           {user ? (
             <UserButton />

@@ -41,10 +41,7 @@ export default function RecipeList({ recipes }: RecipeListProps) {
               </p>
             </div>
 
-            <button
-              type="button"
-              className={`${buttons.tagIcon} w-fit`}
-            >
+            <button type="button" className={`${buttons.tagIcon} w-fit`}>
               <HeartIcon size={24} />
               Save
             </button>

@@ -176,7 +176,11 @@ export default function Profile({
                       }
                       className={buttons.tagIcon}
                     >
-                      {recipe.is_published ? <MinusCircleIcon size={24} /> : <PlusCircleIcon size={24} />}
+                      {recipe.is_published ? (
+                        <MinusCircleIcon size={24} />
+                      ) : (
+                        <PlusCircleIcon size={24} />
+                      )}
                       {recipe.is_published ? "Unpublish" : "Publish"}
                     </button>
                     <button

@@ -85,7 +85,7 @@ export function Recipe({ recipe }: { recipe: RecipeType }) {
         {recipe.ingredients && recipe.ingredients.length > 0 && (
           <ul className="list-decimal space-y-2 ml-4">
             {recipe.ingredients.map((ing) => (
-              <li key={recipe.id} className={typography.p2}>
+              <li key={ing.id} className={typography.p2}>
                 {ing.quantity}
                 {ing.unit} {ing.ingredient}
               </li>

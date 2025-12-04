@@ -1,6 +1,6 @@
 // app/api/recipes/update/route.ts
 import { NextResponse } from "next/server";
-import { updateRecipe } from "@/app/api/query/route";
+import { updateRecipe } from "@/helpers/queries";
 import type { Recipe } from "@/helpers/types";
 
 export async function POST(request: Request) {

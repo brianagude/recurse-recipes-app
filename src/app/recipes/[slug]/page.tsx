@@ -1,7 +1,7 @@
 // /recipes/[slug]/page.tsx
 
-import { getRecipeBySlug } from "@/app/api/query/route";
 import { Recipe } from "@/components/Recipe";
+import { getRecipeBySlug } from "@/helpers/queries";
 import type { Recipe as RecipeType } from "@/helpers/types";
 
 type PageProps = {

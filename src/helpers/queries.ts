@@ -59,19 +59,30 @@ export async function createRecipe(
   const baseSlug = generateSlug(title);
 
   // Insert without slug first to get the ID
-  const result = await conn`
-    INSERT INTO recipes (
-      user_id, title, description, blog_post, ingredients, instructions, 
-      prep_time, cook_time, servings, main_image_url, 
-      instruction_images, tags, is_published
-    )
-    VALUES (
-      ${userId}, ${title}, ${description}, ${blog_post || null}, ${conn.json(ingredients)}, ${instructions},
-      ${prep_time || null}, ${cook_time || null}, ${servings || null}, ${main_image_url || null},
-      ${conn.json(instruction_images || [])}, ${conn.json(tags || [])}, ${is_published}
-    )
-    RETURNING *
-  `;
+const result = await conn`
+  INSERT INTO recipes (
+    user_id, title, description, blog_post, ingredients, instructions, 
+    prep_time, cook_time, servings, main_image_url, 
+    instruction_images, tags, is_published
+  )
+  VALUES (
+    ${userId},
+    ${title},
+    ${description},
+    ${blog_post || null},
+    ${conn.json(ingredients || [])},
+    ${instructions},
+    ${prep_time || null},
+    ${cook_time || null},
+    ${servings || null},
+    ${main_image_url || null},
+    ${conn.json(instruction_images || [])},
+    ${conn.json(tags || [])},
+    ${is_published}
+  )
+  RETURNING *
+`;
+
 
   // Update with slug that includes the ID
   const recipeId = result[0].id;
@@ -116,7 +127,7 @@ export async function updateRecipe(
   if (title !== undefined) updates.title = title;
   if (description !== undefined) updates.description = description;
   if (blog_post !== undefined) updates.blog_post = blog_post;
-  if (ingredients !== undefined) updates.ingredients = conn.json(ingredients);
+  if (ingredients !== undefined) updates.ingredients = ingredients;
   if (instructions !== undefined) updates.instructions = instructions;
   if (prep_time !== undefined) updates.prep_time = prep_time;
   if (cook_time !== undefined) updates.cook_time = cook_time;

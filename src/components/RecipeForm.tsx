@@ -162,7 +162,7 @@ export default function RecipeForm({
           aria-label="Publish recipe"
         />
         <label htmlFor="is_published" className="font-medium">
-          Publish recipe (make visible to others)
+          Publish recipe
         </label>
       </div>
 

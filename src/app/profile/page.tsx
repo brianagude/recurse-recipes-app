@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Profile from "@/components/Profile";
+import type { Recipe } from "@/helpers/types";
 import { stackServerApp } from "@/stack/server";
 import { selectUserRecipes } from "../query/route";
 
@@ -10,7 +11,8 @@ export default async function HomeWrapper() {
     redirect("/handler/sign-up");
   }
 
-  const recipes = await selectUserRecipes(user.id);
+  const result = await selectUserRecipes(user.id);
+  const recipes = [...result] as Recipe[];
 
   if (!recipes || recipes.length === 0) {
     return (

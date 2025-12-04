@@ -19,8 +19,8 @@
   --color-black: #1d1c16;
 
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-bagel-fat-one), ui-sans-serif, system-ui,
-    sans-serif;
+  --font-display:
+    var(--font-bagel-fat-one), ui-sans-serif, system-ui, sans-serif;
 
   --breakpoint-3xl: 1720px;
 }

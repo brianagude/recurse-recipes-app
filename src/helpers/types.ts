@@ -1,4 +1,5 @@
 export interface IngredientItem {
+  id: string;
   ingredient: string;
   quantity: string;
   unit: string;
@@ -8,15 +9,15 @@ export interface Recipe {
   id: number;
   title: string;
   description: string;
-  ingredients: any[]; // loose type for backwards compatibility
+  blog_post?: string;
+  ingredients: IngredientItem[];
   instructions: string;
   prep_time?: number;
   cook_time?: number;
   servings?: number;
   main_image_url?: string;
-  instruction_images?: any[];
+  instruction_images?: string[];
   tags?: string[];
-  is_hidden: boolean;
   is_published: boolean;
   likes_count: number;
   slug?: string;

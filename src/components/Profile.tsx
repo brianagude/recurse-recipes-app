@@ -42,22 +42,6 @@ export default function Profile({
     }
   };
 
-  // const handleToggleVisibility = async (
-  //   recipeId: number,
-  //   currentHidden: boolean,
-  // ) => {
-  //   const res = await fetch("/api/recipes/toggle-visibility", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({ recipeId, userId, isHidden: !currentHidden }),
-  //   });
-
-  //   if (res.ok) {
-  //     const data = await res.json();
-  //     setMyRecipes(myRecipes.map((r) => (r.id === recipeId ? data.recipe : r)));
-  //   }
-  // };
-
   const handleTogglePublished = async (
     recipeId: number,
     currentPublished: boolean,

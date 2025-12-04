@@ -20,7 +20,7 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
-  title: "Bite Sized Recipe App",
+  title: "Bite Sized Recipes",
   description: "A recipe blog",
 };
 

@@ -1,8 +1,10 @@
 import Home from "@/components/Home";
+import type { Recipe } from "@/helpers/types";
 import { selectAll } from "./query/route";
 
 export default async function HomeWrapper() {
-  const recipes = await selectAll();
+  const result = await selectAll();
+  const recipes = [...result] as Recipe[];
 
   if (!recipes || recipes.length === 0) {
     return (

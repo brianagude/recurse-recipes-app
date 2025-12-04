@@ -1,5 +1,6 @@
-// app/query/route.ts - Updated with all new columns
+// app/query/route.ts
 import postgres from "postgres";
+import type { Recipe } from "@/helpers/types";
 
 const { PGHOST, PGDATABASE, PGUSER, PGPASSWORD } = process.env;
 
@@ -23,7 +24,7 @@ function generateSlug(title: string): string {
 export async function selectAll() {
   return await conn`
     SELECT * FROM recipes 
-    WHERE is_published = true AND is_hidden = false 
+    WHERE is_published = true
     ORDER BY created_at DESC
   `;
 }
@@ -38,31 +39,36 @@ export async function selectUserRecipes(userId: string) {
 
 export async function createRecipe(
   userId: string,
-  title: string,
-  description: string,
-  ingredients: any[],
-  instructions: string,
-  prepTime?: number,
-  cookTime?: number,
-  servings?: number,
-  mainImageUrl?: string,
-  instructionImages?: any[],
-  tags?: any[],
-  isPublished: boolean = false,
+  recipe: Omit<Recipe, 'id' | 'created_at' | 'updated_at' | 'likes_count' | 'slug'>
 ) {
+  const {
+    title,
+    description,
+    blog_post,
+    ingredients,
+    instructions,
+    prep_time,
+    cook_time,
+    servings,
+    main_image_url,
+    instruction_images,
+    tags,
+    is_published
+  } = recipe;
+
   const baseSlug = generateSlug(title);
 
   // Insert without slug first to get the ID
   const result = await conn`
     INSERT INTO recipes (
-      user_id, title, description, ingredients, instructions, 
+      user_id, title, description, blog_post, ingredients, instructions, 
       prep_time, cook_time, servings, main_image_url, 
-      instruction_images, tags, is_published, is_hidden
+      instruction_images, tags, is_published
     )
     VALUES (
-      ${userId}, ${title}, ${description}, ${conn.json(ingredients)}, ${instructions},
-      ${prepTime || null}, ${cookTime || null}, ${servings || null}, ${mainImageUrl || null},
-      ${conn.json(instructionImages || [])}, ${conn.json(tags || [])}, ${isPublished}, false
+      ${userId}, ${title}, ${description}, ${blog_post || null}, ${conn.json(ingredients)}, ${instructions},
+      ${prep_time || null}, ${cook_time || null}, ${servings || null}, ${main_image_url || null},
+      ${conn.json(instruction_images || [])}, ${conn.json(tags || [])}, ${is_published}
     )
     RETURNING *
   `;
@@ -84,51 +90,46 @@ export async function createRecipe(
 export async function updateRecipe(
   recipeId: number,
   userId: string,
-  title: string,
-  description: string,
-  ingredients: any[],
-  instructions: string,
-  prepTime?: number,
-  cookTime?: number,
-  servings?: number,
-  mainImageUrl?: string,
-  instructionImages?: any[],
-  tags?: any[],
-  isPublished?: boolean,
+  recipe: Partial<Omit<Recipe, 'id' | 'created_at' | 'updated_at' | 'likes_count' | 'slug'>>
 ) {
-  // Generate new slug based on updated title
-  const baseSlug = generateSlug(title);
-  const slug = `${baseSlug}-${recipeId}`;
+  const {
+    title,
+    description,
+    blog_post,
+    ingredients,
+    instructions,
+    prep_time,
+    cook_time,
+    servings,
+    main_image_url,
+    instruction_images,
+    tags,
+    is_published
+  } = recipe;
+
+  // Generate new slug if title is being updated
+  const slug = title ? `${generateSlug(title)}-${recipeId}` : undefined;
+
+  // Build update object dynamically to only update provided fields
+  const updates: any = { updated_at: conn.unsafe("NOW()") };
+  
+  if (title !== undefined) updates.title = title;
+  if (description !== undefined) updates.description = description;
+  if (blog_post !== undefined) updates.blog_post = blog_post;
+  if (ingredients !== undefined) updates.ingredients = conn.json(ingredients);
+  if (instructions !== undefined) updates.instructions = instructions;
+  if (prep_time !== undefined) updates.prep_time = prep_time;
+  if (cook_time !== undefined) updates.cook_time = cook_time;
+  if (servings !== undefined) updates.servings = servings;
+  if (main_image_url !== undefined) updates.main_image_url = main_image_url;
+  if (instruction_images !== undefined) updates.instruction_images = conn.json(instruction_images);
+  if (tags !== undefined) updates.tags = conn.json(tags);
+  if (slug !== undefined) updates.slug = slug;
+  if (is_published !== undefined) updates.is_published = is_published;
 
   return await conn`
     UPDATE recipes 
-    SET title = ${title}, 
-        description = ${description}, 
-        ingredients = ${conn.json(ingredients)}, 
-        instructions = ${instructions},
-        prep_time = ${prepTime || null},
-        cook_time = ${cookTime || null},
-        servings = ${servings || null},
-        main_image_url = ${mainImageUrl || null},
-        instruction_images = ${conn.json(instructionImages || [])},
-        tags = ${conn.json(tags || [])},
-        slug = ${slug},
-        is_published = ${isPublished !== undefined ? isPublished : conn.unsafe("is_published")},
-        updated_at = NOW()
-    WHERE id = ${recipeId} AND user_id = ${userId}
-    RETURNING *
-  `;
-}
-
-export async function toggleRecipeVisibility(
-  recipeId: number,
-  userId: string,
-  isHidden: boolean,
-) {
-  return await conn`
-    UPDATE recipes 
-    SET is_hidden = ${isHidden},
-        updated_at = NOW()
+    SET ${conn(updates)}
     WHERE id = ${recipeId} AND user_id = ${userId}
     RETURNING *
   `;
@@ -159,7 +160,7 @@ export async function deleteRecipe(recipeId: number, userId: string) {
 export async function getRecipeBySlug(slug: string) {
   return await conn`
     SELECT * FROM recipes 
-    WHERE slug = ${slug} AND is_published = true AND is_hidden = false
+    WHERE slug = ${slug} AND is_published = true
     LIMIT 1
   `;
 }

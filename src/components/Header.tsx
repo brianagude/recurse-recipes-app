@@ -21,25 +21,37 @@ export default function Header() {
         <Link href="/" className="font-display text-3xl">
           bite sized
         </Link>
-        
+
         <nav className="flex gap-4 items-center">
           <button type="button" className={buttons.textIcon}>
             <MagnifyingGlassIcon size={24} />
             Search
           </button>
           <Link href="/profile" className={buttons.textIcon}>
-            {pathname === '/profile' ? <HeartIcon size={24} weight="fill" /> : <HeartIcon size={24} />}
+            {pathname === "/profile" ? (
+              <HeartIcon size={24} weight="fill" />
+            ) : (
+              <HeartIcon size={24} />
+            )}
             My Recipes
           </Link>
           <Link href="/" className={buttons.textIcon}>
-            {pathname === '/' ? <ChefHatIcon size={24} weight="fill" /> : <ChefHatIcon size={24} />}
+            {pathname === "/" ? (
+              <ChefHatIcon size={24} weight="fill" />
+            ) : (
+              <ChefHatIcon size={24} />
+            )}
             All Recipes
           </Link>
           {user ? (
             <UserButton />
           ) : (
             <Link href="/handler/sign-in" className={buttons.textIcon}>
-              <UserCircleIcon size={24} />
+              {pathname.includes("handler") ? (
+                <UserCircleIcon size={24} weight="fill" />
+              ) : (
+                <UserCircleIcon size={24} />
+              )}
               Log In
             </Link>
           )}

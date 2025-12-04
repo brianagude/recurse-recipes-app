@@ -6,8 +6,7 @@ import Filters from "./Filters";
 import RecipeList from "./RecipeList";
 
 export default function Home({ initialRecipes }: { initialRecipes: Recipe[] }) {
-  const [filteredRecipes, setFilteredRecipes] =
-    useState<Recipe[]>(initialRecipes);
+  const [filteredRecipes, setFilteredRecipes] = useState<Recipe[]>(initialRecipes);
 
   return (
     <main className="min-h-screen">

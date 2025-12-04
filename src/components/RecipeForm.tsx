@@ -2,11 +2,9 @@
 
 import type React from "react";
 import { useState } from "react";
-import { type IngredientItem, type Recipe, TAG_OPTIONS } from "@/helpers/types";
-import { normalizeIngredients } from "@/helpers/utils";
+import { type Recipe, TAG_OPTIONS } from "@/helpers/types";
 
 const UNITS = [
-  "",
   "cup",
   "tbsp",
   "tsp",
@@ -20,6 +18,9 @@ const UNITS = [
 ];
 const hourOptions = Array.from({ length: 13 }, (_, i) => i);
 const minuteOptions = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55];
+
+// Generate unique IDs for ingredients
+const generateId = () => `ingredient-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
 interface RecipeFormProps {
   userId: string;
@@ -37,7 +38,15 @@ export default function RecipeForm({
   const [formData, setFormData] = useState({
     title: recipe?.title || "",
     description: recipe?.description || "",
-    ingredients: normalizeIngredients(recipe?.ingredients ?? []),
+    blog_post: recipe?.blog_post || "",
+    ingredients: recipe?.ingredients?.length 
+      ? recipe.ingredients.map(ing => ({
+          id: ing.id || generateId(),
+          ingredient: ing.ingredient || "",
+          quantity: ing.quantity || "",
+          unit: ing.unit || "",
+        }))
+      : [{ id: generateId(), ingredient: "", quantity: "", unit: "" }],
     instructions: recipe?.instructions || "",
     prep_time_hours: recipe?.prep_time ? Math.floor(recipe.prep_time / 60) : 0,
     prep_time_minutes: recipe?.prep_time ? recipe.prep_time % 60 : 0,
@@ -55,28 +64,28 @@ export default function RecipeForm({
       ...formData,
       ingredients: [
         ...formData.ingredients,
-        { ingredient: "", quantity: "", unit: "" },
+        { id: generateId(), ingredient: "", quantity: "", unit: "" },
       ],
     });
 
   const updateIngredient = (
-    index: number,
-    field: keyof IngredientItem,
+    id: string,
+    field: string,
     value: string,
   ) => {
-    const newIngredients = formData.ingredients.map((it, i) =>
-      i === index ? { ...it, [field]: value } : it,
+    const newIngredients = formData.ingredients.map((it) =>
+      it.id === id ? { ...it, [field]: value } : it,
     );
     setFormData({ ...formData, ingredients: newIngredients });
   };
 
-  const removeIngredient = (index: number) => {
-    const next = formData.ingredients.filter((_, i) => i !== index);
+  const removeIngredient = (id: string) => {
+    const next = formData.ingredients.filter((item) => item.id !== id);
     setFormData({
       ...formData,
       ingredients: next.length
         ? next
-        : [{ ingredient: "", quantity: "", unit: "" }],
+        : [{ id: generateId(), ingredient: "", quantity: "", unit: "" }],
     });
   };
 
@@ -96,6 +105,7 @@ export default function RecipeForm({
     e.preventDefault();
 
     const payloadIngredients = formData.ingredients.map((i) => ({
+      id: i.id,
       ingredient: i.ingredient,
       quantity: i.quantity,
       unit: i.unit,
@@ -105,6 +115,7 @@ export default function RecipeForm({
     const body = {
       title: formData.title,
       description: formData.description,
+      blog_post: formData.blog_post,
       ingredients: payloadIngredients,
       instructions: formData.instructions,
       prep_time: formData.prep_time_hours * 60 + formData.prep_time_minutes,
@@ -175,6 +186,17 @@ export default function RecipeForm({
         }
         className="w-full p-3 border rounded"
         rows={3}
+      />
+
+      {/* Blog Post */}
+      <textarea
+        placeholder="Blog Post (optional - share your story or tips)"
+        value={formData.blog_post}
+        onChange={(e) =>
+          setFormData({ ...formData, blog_post: e.target.value })
+        }
+        className="w-full p-3 border rounded"
+        rows={6}
       />
 
       {/* Tags */}
@@ -334,17 +356,17 @@ export default function RecipeForm({
       {/* Ingredients */}
       <div>
         <label className="font-semibold mb-2 block">Ingredients *</label>
-        {formData.ingredients.map((item, index) => (
-          <div key={index} className="flex gap-3 mb-3">
+        {formData.ingredients.map((item) => (
+          <div key={item.id} className="flex gap-3 mb-3">
             <input
               type="text"
               placeholder="Ingredient (e.g., sugar)"
               value={item.ingredient}
               onChange={(e) =>
-                updateIngredient(index, "ingredient", e.target.value)
+                updateIngredient(item.id, "ingredient", e.target.value)
               }
               className="flex-1 p-3 border rounded"
-              aria-label={`Ingredient ${index + 1}`}
+              aria-label={`Ingredient ${item.ingredient || 'name'}`}
               required
             />
             <input
@@ -352,16 +374,16 @@ export default function RecipeForm({
               placeholder="Qty"
               value={item.quantity}
               onChange={(e) =>
-                updateIngredient(index, "quantity", e.target.value)
+                updateIngredient(item.id, "quantity", e.target.value)
               }
               className="w-24 p-3 border rounded"
-              aria-label={`Quantity for ingredient ${index + 1}`}
+              aria-label={`Quantity for ${item.ingredient || 'ingredient'}`}
             />
             <select
               value={item.unit}
-              onChange={(e) => updateIngredient(index, "unit", e.target.value)}
+              onChange={(e) => updateIngredient(item.id, "unit", e.target.value)}
               className="w-32 p-3 border rounded"
-              aria-label={`Unit for ingredient ${index + 1}`}
+              aria-label={`Unit for ${item.ingredient || 'ingredient'}`}
             >
               {UNITS.map((u) => (
                 <option key={u} value={u}>
@@ -372,9 +394,9 @@ export default function RecipeForm({
             {formData.ingredients.length > 1 && (
               <button
                 type="button"
-                onClick={() => removeIngredient(index)}
+                onClick={() => removeIngredient(item.id)}
                 className="text-red-600 hover:text-red-800 px-2"
-                aria-label={`Remove ingredient ${index + 1}`}
+                aria-label={`Remove ${item.ingredient || 'ingredient'}`}
               >
                 ✕
               </button>

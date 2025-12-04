@@ -1,39 +1,16 @@
 // app/api/recipes/create/route.ts
 import { NextResponse } from "next/server";
-import { createRecipe } from "@/app/query/route";
+import { createRecipe } from "@/helpers/queries";
+import type { Recipe } from "@/helpers/types";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const {
-      userId,
-      title,
-      description,
-      ingredients,
-      instructions,
-      prep_time,
-      cook_time,
-      servings,
-      main_image_url,
-      instruction_images,
-      tags,
-      is_published,
-    } = body;
+    const { userId, ...recipe } = body as { 
+      userId: string;
+    } & Omit<Recipe, 'id' | 'created_at' | 'updated_at' | 'likes_count' | 'slug'>;
 
-    const result = await createRecipe(
-      userId,
-      title,
-      description,
-      ingredients,
-      instructions,
-      prep_time,
-      cook_time,
-      servings,
-      main_image_url,
-      instruction_images,
-      tags,
-      is_published,
-    );
+    const result = await createRecipe(userId, recipe);
 
     return NextResponse.json({ recipe: result[0] });
   } catch (error) {

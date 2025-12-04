@@ -1,6 +1,6 @@
 // app/api/recipes/delete/route.ts
 import { NextResponse } from "next/server";
-import { deleteRecipe } from "@/app/query/route";
+import { deleteRecipe } from "@/helpers/queries";
 
 export async function POST(request: Request) {
   try {

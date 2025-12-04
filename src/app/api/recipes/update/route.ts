@@ -1,41 +1,17 @@
 // app/api/recipes/update/route.ts
 import { NextResponse } from "next/server";
-import { updateRecipe } from "@/app/query/route";
+import { updateRecipe } from "@/helpers/queries";
+import type { Recipe } from "@/helpers/types";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const {
-      recipeId,
-      userId,
-      title,
-      description,
-      ingredients,
-      instructions,
-      prep_time,
-      cook_time,
-      servings,
-      main_image_url,
-      instruction_images,
-      tags,
-      is_published,
-    } = body;
+    const { recipeId, userId, ...recipe } = body as {
+      recipeId: number;
+      userId: string;
+    } & Partial<Omit<Recipe, 'id' | 'created_at' | 'updated_at' | 'likes_count' | 'slug'>>;
 
-    const result = await updateRecipe(
-      recipeId,
-      userId,
-      title,
-      description,
-      ingredients,
-      instructions,
-      prep_time,
-      cook_time,
-      servings,
-      main_image_url,
-      instruction_images,
-      tags,
-      is_published,
-    );
+    const result = await updateRecipe(recipeId, userId, recipe);
 
     return NextResponse.json({ recipe: result[0] });
   } catch (error) {

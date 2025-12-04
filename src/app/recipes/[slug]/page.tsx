@@ -1,23 +1,21 @@
-import { getRecipeBySlug } from "@/app/query/route";
+// /recipes/[slug]/page.tsx
+
+import { Recipe } from "@/components/Recipe";
+import { getRecipeBySlug } from "@/helpers/queries";
+import type { Recipe as RecipeType } from "@/helpers/types";
 
 type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export default async function BlogPostPage({ params }: PageProps) {
+export default async function RecipePage({ params }: PageProps) {
   const { slug } = await params;
-  const [recipe] = await getRecipeBySlug(slug);
+  const result = await getRecipeBySlug(slug);
+  const recipe = result?.[0] ? ({ ...result[0] } as RecipeType) : null;
 
   if (!recipe) {
     return <div>Recipe not found</div>;
   }
 
-  console.log(recipe);
-
-  return (
-    <div>
-      <h1>{recipe.title}</h1>
-      <p>Slug: {slug}</p>
-    </div>
-  );
+  return <Recipe recipe={recipe} />;
 }

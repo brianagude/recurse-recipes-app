@@ -1,6 +1,6 @@
 // app/api/recipes/toggle-published/route.ts
 import { NextResponse } from "next/server";
-import { toggleRecipePublished } from "@/app/query/route";
+import { toggleRecipePublished } from "@/helpers/queries";
 
 export async function POST(request: Request) {
   try {

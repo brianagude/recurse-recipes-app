@@ -71,8 +71,7 @@ export async function createRecipe(
       ${title},
       ${description},
       ${blog_post || null},
-      // @ts-expect-error ignore JSONValue typing temporarily
-      ${conn.json(ingredients || [])},
+      ${conn.json((ingredients || []) as any)},
       ${instructions},
       ${prep_time || null},
       ${cook_time || null},

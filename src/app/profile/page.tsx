@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Profile from "@/components/Profile";
 import type { Recipe } from "@/helpers/types";
 import { stackServerApp } from "@/stack/server";
-import { selectUserRecipes } from "../query/route";
+import { selectUserRecipes } from "../api/query/route";
 
 export default async function HomeWrapper() {
   const user = await stackServerApp.getUser();

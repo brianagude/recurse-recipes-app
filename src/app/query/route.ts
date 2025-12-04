@@ -157,7 +157,6 @@ export async function deleteRecipe(recipeId: number, userId: string) {
 }
 
 export async function getRecipeBySlug(slug: string) {
-  console.log(slug);
   return await conn`
     SELECT * FROM recipes 
     WHERE slug = ${slug} AND is_published = true AND is_hidden = false

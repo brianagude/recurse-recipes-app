@@ -2,10 +2,10 @@
 
 import {
   ClockIcon,
+  EyeClosedIcon,
+  EyeIcon,
   LinkIcon,
-  MinusCircleIcon,
   PencilCircleIcon,
-  PlusCircleIcon,
   StarIcon,
   TrashIcon,
 } from "@phosphor-icons/react";
@@ -177,11 +177,16 @@ export default function Profile({
                       className={buttons.tagIcon}
                     >
                       {recipe.is_published ? (
-                        <MinusCircleIcon size={24} />
+                        <>
+                          <EyeClosedIcon size={24} />
+                          <span>Unpublish</span>
+                        </>
                       ) : (
-                        <PlusCircleIcon size={24} />
+                        <>
+                          <EyeIcon size={24} />
+                          <span>Publish</span>
+                        </>
                       )}
-                      {recipe.is_published ? "Unpublish" : "Publish"}
                     </button>
                     <button
                       type="button"
